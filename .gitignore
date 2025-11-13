@@ -1,0 +1,9 @@
+amadeus/
+zenith/
+supplier-hub/
+payment-gateway/
+core-api/
+core-app/
+b2c-web/
+
+docker-compose.yml
