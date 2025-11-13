@@ -1,0 +1,7 @@
+*
+!amadeus/
+!zenith/
+!payment-gateway/
+!supplier-hub/
+!core-api/
+!.gitignore
