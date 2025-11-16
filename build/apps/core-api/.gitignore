@@ -1,6 +1,0 @@
-*
-!.env
-!Dockerfile
-!.gitignore
-!supervisor/
-!storage/
