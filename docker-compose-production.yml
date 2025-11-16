@@ -23,6 +23,7 @@ services:
           aliases:
             - zenith.akijair.test
             - amadeus.akijair.test
+            - core-api.akijair.test
 
   zenith:
     build:
