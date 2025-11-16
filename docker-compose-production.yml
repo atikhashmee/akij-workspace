@@ -117,8 +117,12 @@ services:
       ports:
         - 6379:6379
         - 8001:8001
+      volumes:
+        - ./build/redis/data:/data
       networks:
         - akijair-network
+      environment:
+        REDIS_ARGS: --appendonly yes --appendfsync everysec
   broker:
     image: apache/kafka:latest
     container_name: broker
@@ -142,6 +146,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_NUM_PARTITIONS: 3
+      KAFKA_LOG_DIRS: /kafka/data
     ports:
       - 9092:9092 # Note: 9092 is exposed to the host for internal traffic, but it's not advertised.
       - 9093:9093 # Internal controller port, usually not exposed.
@@ -154,6 +159,8 @@ services:
       start_period: 50s
     networks:
       - akijair-network
+    volumes:
+      - ./build/kafka/data:/kafka/data
   kafbat-ui:
     container_name: kafbat-ui
     image: ghcr.io/kafbat/kafka-ui:latest
