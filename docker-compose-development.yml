@@ -19,7 +19,11 @@ services:
       - core-api
       - supplier-hub
     networks:
-      - akijair-network
+      akijair-network:
+          aliases:
+            - zenith.akijair.test
+            - amadeus.akijair.test
+            - core-api.akijair.test
 
   zenith:
     build:
@@ -56,6 +60,7 @@ services:
   payment-gateway:
     build:
       context: ./payment-gateway
+      dockerfile: Dockerfile.fpm
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
@@ -74,6 +79,7 @@ services:
   core-api:
     build:
       context: ./core-api
+      dockerfile: Dockerfile.fpm
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
