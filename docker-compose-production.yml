@@ -18,6 +18,7 @@ services:
       - payment-gateway
       - core-api
       - supplier-hub
+      - core-app
     networks:
       akijair-network:
           aliases:
@@ -112,7 +113,21 @@ services:
       TARGET: "prod"
     networks:
       - akijair-network
-
+  core-app:
+    build:
+      context: ./core-app
+      dockerfile: Dockerfile.dev
+    container_name: core-app
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./core-app:/app   # mount local code
+      - /app/node_modules # prevent overwriting node_modules
+    environment:
+      NODE_ENV: development
+      NEXT_PUBLIC_API_BASE_URL: "http://core-api.akijair.test/api"
+    networks:
+      - akijair-network
   app-redis:
       container_name: redis-stack
       image: redis/redis-stack:latest
