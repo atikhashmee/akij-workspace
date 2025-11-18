@@ -6,7 +6,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./build/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./build/nginx/default-subdomain.conf:/etc/nginx/conf.d/default.conf:ro
       - ./build/nginx/default.html:/var/www/default.html
       - ./zenith/public:/var/www/zenith/public:ro
       - ./amadeus/public:/var/www/amadeus/public:ro
@@ -19,6 +19,7 @@ services:
       - core-api
       - supplier-hub
       - core-app
+      - b2c-web
     networks:
       akijair-network:
           aliases:
@@ -124,14 +125,25 @@ services:
       context: ./core-app
       dockerfile: Dockerfile.dev
     container_name: core-app
-    ports:
-      - "3000:3000"
     volumes:
       - ./core-app:/app   # mount local code
       - /app/node_modules # prevent overwriting node_modules
-    environment:
-      NODE_ENV: development
-      NEXT_PUBLIC_API_BASE_URL: "http://core-api.akijair.test/api"
+    env_file:
+      - ./core-app/.env
+    restart: always
+    networks:
+      - akijair-network
+  b2c-web:
+    build:
+      context: ./b2c-web
+      dockerfile: Dockerfile.dev
+    container_name: b2c-web
+    volumes:
+      - ./core-app:/app   # mount local code
+      - /app/node_modules # prevent overwriting node_modules
+    env_file:
+      - ./core-app/.env
+    restart: always
     networks:
       - akijair-network
   app-redis:
