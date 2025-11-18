@@ -114,6 +114,9 @@ services:
       TARGET: "prod"
     networks:
       - akijair-network
+    depends_on:
+      - broker
+      - app-redis
   core-app:
     build:
       context: ./core-app
@@ -135,6 +138,9 @@ services:
     restart: always
     networks:
       - akijair-network
+    depends_on:
+      - core-api
+      - supplier-hub
 
   app-redis:
       container_name: redis-stack

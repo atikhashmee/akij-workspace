@@ -120,6 +120,9 @@ services:
       TARGET: "dev"
     networks:
       - akijair-network
+    depends_on:
+      - broker
+      - app-redis
   core-app:
     build:
       context: ./core-app
@@ -139,13 +142,16 @@ services:
       dockerfile: Dockerfile.dev
     container_name: b2c-web
     volumes:
-      - ./core-app:/app   # mount local code
+      - ./b2c-web:/app   # mount local code
       - /app/node_modules # prevent overwriting node_modules
     env_file:
-      - ./core-app/.env
+      - ./b2c-web/.env
     restart: always
     networks:
       - akijair-network
+    depends_on:
+      - core-api
+      - supplier-hub
   app-redis:
       container_name: redis-stack
       image: redis/redis-stack:latest
