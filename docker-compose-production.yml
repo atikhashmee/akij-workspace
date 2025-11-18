@@ -26,6 +26,7 @@ services:
             - zenith.akijair.test
             - amadeus.akijair.test
             - core-api.akijair.test
+            - supplierhub.akijair.test
 
   zenith:
     build:
@@ -125,6 +126,8 @@ services:
     env_file:
       - ./build/apps/core-app/.env
     restart: always
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - akijair-network
 
@@ -138,6 +141,8 @@ services:
     restart: always
     networks:
       - akijair-network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     depends_on:
       - core-api
       - supplier-hub
