@@ -26,6 +26,7 @@ services:
             - zenith.akijair.test
             - amadeus.akijair.test
             - core-api.akijair.test
+            - supplierhub.akijair.test
 
   zenith:
     build:
@@ -38,8 +39,6 @@ services:
       - "9000"
     volumes:
       - ./zenith:/var/www
-      - ./build/apps/zenith/.env:/var/www/.env
-      - ./build/apps/zenith/storage:/var/www/storage
     networks:
       - akijair-network
 
@@ -54,8 +53,6 @@ services:
       - "9000"
     volumes:
       - ./amadeus:/var/www
-      - ./build/apps/amadeus/.env:/var/www/.env
-      - ./build/apps/amadeus/storage:/var/www/storage
     networks:
       - akijair-network
 
@@ -73,8 +70,6 @@ services:
       - "9000"
     volumes:
       - ./payment-gateway:/var/www
-      - ./build/apps/payment-gateway/.env:/var/www/.env
-      - ./build/apps/payment-gateway/storage:/var/www/storage
     networks:
       - akijair-network
 
@@ -92,8 +87,6 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./core-api:/var/www
-      - ./build/apps/core-api/.env:/var/www/.env
-      - ./build/apps/core-api/storage:/var/www/storage
       - ./build/apps/core-api/supervisor/supervisord.conf:/etc/supervisor/supervisord.conf:ro
       - ./build/apps/core-api/supervisor/conf.d:/etc/supervisor/conf.d:ro
     networks:
@@ -114,8 +107,6 @@ services:
       - "host.docker.internal:host-gateway"
     volumes:
       - ./supplier-hub:/app/
-      - ./build/apps/supplier-hub/.env:/var/www/.env
-      - ./build/apps/supplier-hub/storage:/var/www/storage
     environment:
       TARGET: "dev"
     networks:
@@ -129,24 +120,26 @@ services:
       dockerfile: Dockerfile.dev
     container_name: core-app
     volumes:
-      - ./core-app:/app   # mount local code
-      - /app/node_modules # prevent overwriting node_modules
+      - ./core-app:/app:cached       # Use cached to speed up file sync
+      - /app/node_modules            # Prevent overwriting node_modules
     env_file:
       - ./core-app/.env
-    restart: always
     networks:
       - akijair-network
+    depends_on:
+      - core-api
+      - supplier-hub
+
   b2c-web:
     build:
       context: ./b2c-web
       dockerfile: Dockerfile.dev
     container_name: b2c-web
     volumes:
-      - ./b2c-web:/app   # mount local code
-      - /app/node_modules # prevent overwriting node_modules
+      - ./b2c-web:/app:cached
+      - /app/node_modules
     env_file:
       - ./b2c-web/.env
-    restart: always
     networks:
       - akijair-network
     depends_on:

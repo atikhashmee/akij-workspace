@@ -13,9 +13,22 @@ now based on your preference
 
 `cp docker-compose-development.yml compose.yml`
 
+_special notes_
+
+you need to setup your .env and storage from the project folder
+just like you do as an individual application development,
+also to keep the separate concern of you development and production environment
+so, make sure you get those ready before spinning up the projects
+
 ### production
 
 `cp docker-compose-production.yml compose.yml`
+
+_special notes_
+
+all your .env and storage folder will be used from
+builds/apps directory . so that your production env is different
+than other things
 
 then run
 
