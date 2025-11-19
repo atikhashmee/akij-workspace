@@ -31,6 +31,7 @@ services:
   zenith:
     build:
       context: ./zenith
+      dockerfile: Dockerfile.fpm
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
@@ -45,6 +46,7 @@ services:
   amadeus:
     build:
       context: ./amadeus
+      dockerfile: Dockerfile.fpm
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
