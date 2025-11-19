@@ -97,6 +97,7 @@ services:
     build:
       target: ${TARGET:-dev}
       context: ./supplier-hub
+      dockerfile: Dockerfile.local
       args:
         APP_USER: ${APP_USER:-1000}
     container_name: supplier-hub
