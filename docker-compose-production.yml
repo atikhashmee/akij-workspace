@@ -25,6 +25,7 @@ services:
           aliases:
             - zenith.akijair.test
             - amadeus.akijair.test
+            - payment.akijair.test
             - core-api.akijair.test
             - supplierhub.akijair.test
 
